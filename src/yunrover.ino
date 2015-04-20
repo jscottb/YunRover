@@ -1,3 +1,25 @@
+/*
+   Ardiono Yun wifi/Web controlled rover.
+
+   Goal in life...
+      Follwoing your commands :-)
+
+   Written by Scott Beasley - 2015
+   Free to use or modify. Enjoy.
+*/
+
+/*
+   Uses the l29NDriver library for the L9110 H-bridge.
+
+   Download from https://github.com/jscottb/l29NDriver or clone the zip from
+   https://github.com/jscottb/l29NDriver/archive/master.zip
+   Unzip and copy to your Arduino library folder or follow the instructions
+   here: http://arduino.cc/en/guide/libraries
+
+   Note: You may need to remove the '-master' from the archive file name to add
+   the library
+*/
+
 #include <Bridge.h>
 #include <YunServer.h>
 #include <YunClient.h>
