@@ -1,0 +1,206 @@
+<html>
+<head>
+<title>Arduino Yun Controlled Rover</title>
+<script type="text/javascript">
+document.onkeypress = keypressed;
+var last_action = "";
+var last_pan_val = 0;
+var last_tilt_val = 0;
+var start_dt = new Date ( );
+var last_mills = start_dt.getTime ( );
+
+function sendMotion (action) {
+   var run_dt = new Date ( );
+   var mills = run_dt.getTime ( );
+
+   // If a dup, ignore if newer than 1.5 seconds
+   if (action == last_action && (mills - last_mills) <= 1500)
+      return;
+
+   last_mills = mills;
+   last_action = action;
+   server = "/arduino/" + action;
+   request = new XMLHttpRequest ( );
+   request.open ("GET", server, true);
+   request.send ( );
+}
+
+function keypressed (event){
+   var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
+   //alert ("The Unicode character code is: " + chCode);
+   if (chCode == 49)
+      sendMotion ('panlt')
+
+   if (chCode == 50)
+      sendMotion ('panrt')
+
+   if (chCode == 51)
+      sendMotion ('tiltup')
+
+   if (chCode == 52)
+      sendMotion ('tiltdn')
+
+   if (chCode == 104)
+      sendMotion ('home')
+
+   if (chCode == 113)
+      sendMotion ('ltforward')
+
+   if (chCode == 119)
+      sendMotion ('forward')
+
+   if (chCode == 101)
+      sendMotion ('rtforward')
+
+   if (chCode == 97)
+      sendMotion ('left')
+
+   if (chCode == 115)
+      sendMotion ('stop')
+
+   if (chCode == 100)
+      sendMotion ('right')
+
+   if (chCode == 122)
+      sendMotion ('ltbackward')
+
+   if (chCode == 120)
+      sendMotion ('backward')
+
+   if (chCode == 99)
+      sendMotion ('rtbackward')
+}
+
+</script>
+</head>
+<center>
+Rover Control Center
+<font face="Arial">
+<table name="Table" border="1" cellpadding="6">
+<tr>
+<td align="center">
+Pan
+<br>
+<input type="hidden" name="panhd" id="panlt" />
+<input type="image" src="http://yunie.local/sd/1leftarrow.png"
+id="imgpanlt" onclick="sendMotion('panlt');"
+onkeypress="keypressed (event);"/>
+<input type="hidden" name="panhd" id="panrt" />
+<input type="image" src="http://yunie.local/sd/1rightarrow.png"
+id="imgpanrt" onclick="sendMotion('panrt');"/>
+</td>
+<td align="center">
+Home
+<br>
+<input type="hidden" name="homehd" id="homecam" />
+<input type="image" src="http://yunie.local/sd/gohome.png"
+id="imghome" onclick="sendMotion('home');"/>
+</td>
+<td align="center">
+Tilt
+<br>
+<input type="hidden" name="tilthd" id="tiltup" />
+<input type="image" src="http://yunie.local/sd/1uparrow.png"
+id="imgtiltup" onclick="sendMotion('tiltup');"
+onkeypress="keypressed (event);"/>
+<input type="hidden" name="tilthd" id="tiltdn" />
+<input type="image" src="http://yunie.local/sd/1downarrow.png"
+id="imgtiltdn" onclick="sendMotion('tiltdn');"/>
+</td>
+</tr>
+<tr>
+<td align="center">
+Left-Forward
+<br>
+<input type="hidden" name="action" value="0" id="forward" />
+<input type="image" src="http://yunie.local/sd/arrow_up_left.png"
+id="imgLtforward" onclick="sendMotion('ltforward');"/>
+</td>
+<td align="center">
+Forward
+<br>
+<input type="hidden" name="action" value="0" id="forward" />
+<input type="image" src="http://yunie.local/sd/forward.png" id="imgforward"
+onclick="sendMotion('forward');"/>
+</td>
+<td align="center">
+Right-Forward
+<br>
+<input type="hidden" name="action" value="0" id="forward" />
+<input type="image" src="http://yunie.local/sd/arrow_up_right.png"
+id="imgRtforward" onclick="sendMotion('rtforward');"/>
+</td>
+</tr>
+<tr>
+<td align="center">
+Left
+<br>
+<input type="hidden" name="action" value="0" id="left" />
+<input type="image" src="http://yunie.local/sd/left.png" id="imgleft"
+onclick="sendMotion('left');"/>
+</td>
+<td align="center">
+Stop
+<br>
+<input type="hidden" name="action" value="0" id="stop" />
+<input type="image" src="http://yunie.local/sd/stop.png" width="50" id="imgstop"
+onclick="sendMotion('stop');"/>
+</td>
+<td align="center">
+Right
+<br>
+<input type="hidden" name="action" value="0" id="right" />
+<input type="image" src="http://yunie.local/sd/right.png" id="imgright"
+onclick="sendMotion('right');"/>
+</td>
+</tr>
+<tr>
+<td align="center">
+Left-Backward
+<br>
+<input type="hidden" name="action" value="0" id="forward" />
+<input type="image" src="http://yunie.local/sd/arrow_down_left.png"
+id="imgltback" onclick="sendMotion('ltbackward');"/>
+</td>
+<td align="center">
+Backward
+<br>
+<input type="hidden" name="action" value="0" id="backward" />
+<input type="image" src="http://yunie.local/sd/backward.png" id="imgbackward"
+onclick="sendMotion('backward');"/>
+</td>
+<td align="center">
+Right-Backward
+<br>
+<input type="hidden" name="action" value="0" id="forward" />
+<input type="image" src="http://yunie.local/sd/arrow_down_right.png"
+id="imgrtback" onclick="sendMotion('rtbackward');"/>
+</td>
+</tr>
+<tr>
+<td align="center">
+Camera On
+<br>
+<input type="hidden" name="action" value="0" id="forward" />
+<input type="image" src="http://yunie.local/sd/camera_on.png"
+id="camon" onclick="sendMotion('camon');"/>
+</td>
+<td align="center">
+</td>
+<td align="center">
+Camera Off
+<br>
+<input type="hidden" name="action" value="0" id="forward" />
+<input type="image" src="http://yunie.local/sd/camera_off.png"
+id="camoff" onclick="sendMotion('camoff');"/>
+</td>
+</tr>
+</table>
+<br>
+<center>
+<iframe src="http://yunie.local:8080/stream_simple.html" width="375" height="275">
+</center>
+<br><br>
+</font>
+</center>
+</html>
